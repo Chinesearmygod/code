@@ -2,7 +2,8 @@
 #include <fstream>
 
 extractor::extractor(Mat img1_bev_, Mat img2_bev_, int edge_flag_,
-                     int exposure_flag_) {
+                     int exposure_flag_)
+{
   img1_bev = img1_bev_;
   img2_bev = img2_bev_;
   edge_flag = edge_flag_;
@@ -14,7 +15,8 @@ extractor::extractor(Mat img1_bev_, Mat img2_bev_, int edge_flag_,
 
 extractor::extractor(Mat img1_bev_, Mat img2_bev_, Mat intrinsic1_,
                      Mat intrinsic2_, Eigen::Matrix4d extrinsic1_,
-                     Eigen::Matrix4d extrinsic2_) {
+                     Eigen::Matrix4d extrinsic2_)
+{
   img1_bev = img1_bev_;
   img2_bev = img2_bev_;
   intrinsic1 = intrinsic1_;
@@ -25,27 +27,35 @@ extractor::extractor(Mat img1_bev_, Mat img2_bev_, Mat intrinsic1_,
 
 extractor::~extractor() {}
 
-void extractor::writetocsv(string filename, vector<Point> vec) {
+void extractor::writetocsv(string filename, vector<Point> vec)
+{
   ofstream outfile;
   outfile.open(filename, ios::out);
-  for (auto pixel : vec) {
+  for (auto pixel : vec)
+  {
     outfile << pixel.x << " " << pixel.y << endl;
   }
   outfile.close();
 }
 
-void extractor::Binarization() {
+void extractor::Binarization()
+{
   assert(img1_bev.rows == img2_bev.rows);
   assert(img1_bev.cols == img2_bev.cols);
   int rows = img1_bev.rows;
   int cols = img2_bev.cols;
   Mat dst(img1_bev.size(), CV_8UC1);
-  for (int i = 0; i < rows; i++) {
-    for (int j = 0; j < cols; j++) {
+  for (int i = 0; i < rows; i++)
+  {
+    for (int j = 0; j < cols; j++)
+    {
       if (img1_bev.at<Vec3b>(i, j) != Vec3b(0, 0, 0) &&
-          img2_bev.at<Vec3b>(i, j) != Vec3b(0, 0, 0)) {
+          img2_bev.at<Vec3b>(i, j) != Vec3b(0, 0, 0))
+      {
         dst.at<uchar>(i, j) = 255;
-      } else {
+      }
+      else
+      {
         dst.at<uchar>(i, j) = 0;
       }
     }
@@ -53,7 +63,8 @@ void extractor::Binarization() {
   bin_of_imgs = dst;
 }
 
-void extractor::findcontours() {
+void extractor::findcontours()
+{
   vector<vector<Point>> contours;
   Mat erode_img, dilate_img;
   Mat dilate_kernel = getStructuringElement(0, Size(5, 5));
@@ -65,8 +76,10 @@ void extractor::findcontours() {
 
   int maxsize = 0;
   int index = 0;
-  for (int i = 0; i < contours.size(); i++) {
-    if (contours[i].size() > maxsize) {
+  for (int i = 0; i < contours.size(); i++)
+  {
+    if (contours[i].size() > maxsize)
+    {
       maxsize = contours[i].size();
       index = i;
     }
@@ -82,36 +95,43 @@ void extractor::findcontours() {
 }
 
 std::vector<std::vector<cv::Point>>
-extractor::fillContour(const std::vector<std::vector<cv::Point>> &_contours) {
+extractor::fillContour(const std::vector<std::vector<cv::Point>> &_contours)
+{
   // sort as x descent y descent.
   std::vector<std::vector<cv::Point>> contours(_contours);
-  for (size_t i = 0; i < contours.size(); ++i) {
+  for (size_t i = 0; i < contours.size(); ++i)
+  {
     std::vector<cv::Point> sub(contours[i]);
-    std::sort(sub.begin(), sub.end(), [&](cv::Point &A, cv::Point &B) {
+    std::sort(sub.begin(), sub.end(), [&](cv::Point &A, cv::Point &B)
+              {
       if (A.x == B.x)
         return A.y < B.y;
       else
-        return A.x < B.x;
-    });
+        return A.x < B.x; });
     contours[i] = sub;
   }
   // restore as pairs with same ys.
   std::vector<std::vector<std::pair<cv::Point, cv::Point>>> contours_pair;
-  for (size_t i = 0; i < contours.size(); ++i) {
+  for (size_t i = 0; i < contours.size(); ++i)
+  {
     std::vector<std::pair<cv::Point, cv::Point>> pairs;
-    for (size_t j = 0; j < contours[i].size(); ++j) {
+    for (size_t j = 0; j < contours[i].size(); ++j)
+    {
       // j==0
-      if (pairs.size() == 0) {
+      if (pairs.size() == 0)
+      {
         pairs.push_back({contours[i][j], contours[i][j]});
         continue;
       }
       // j>0
-      if (contours[i][j].x != pairs[pairs.size() - 1].first.x) {
+      if (contours[i][j].x != pairs[pairs.size() - 1].first.x)
+      {
         pairs.push_back({contours[i][j], contours[i][j]});
         continue;
       }
 
-      if (contours[i][j].x == pairs[pairs.size() - 1].first.x) {
+      if (contours[i][j].x == pairs[pairs.size() - 1].first.x)
+      {
         if (contours[i][j].y > pairs[pairs.size() - 1].second.y)
           pairs[pairs.size() - 1].second = contours[i][j];
         continue;
@@ -122,14 +142,19 @@ extractor::fillContour(const std::vector<std::vector<cv::Point>> &_contours) {
 
   // fill contour coordinates.
   std::vector<std::vector<cv::Point>> fill_con;
-  for (auto pair_set : contours_pair) {
+  for (auto pair_set : contours_pair)
+  {
     std::vector<cv::Point> pointSet;
-    for (auto aPair : pair_set) {
-      if (aPair.first == aPair.second) {
+    for (auto aPair : pair_set)
+    {
+      if (aPair.first == aPair.second)
+      {
         pointSet.push_back(aPair.first);
-
-      } else {
-        for (int i = aPair.first.y; i <= aPair.second.y; ++i) {
+      }
+      else
+      {
+        for (int i = aPair.first.y; i <= aPair.second.y; ++i)
+        {
           pointSet.push_back(cv::Point(aPair.first.x, i));
         }
       }
@@ -141,7 +166,8 @@ extractor::fillContour(const std::vector<std::vector<cv::Point>> &_contours) {
 
 vector<cv::Point> extractor::extrac_textures_and_save(string pic_filename,
                                                       string csv_filename,
-                                                      string idx, double size) {
+                                                      string idx, double size)
+{
   int down_sample = 500;
   Mat gray1, gray2;
   cvtColor(img1_bev, gray1, COLOR_BGR2GRAY);
@@ -152,35 +178,51 @@ vector<cv::Point> extractor::extrac_textures_and_save(string pic_filename,
   GaussianBlur(gray2, gray2, Size(3, 3), 0);
 
   double camera_center_x, camera_center_y;
-  if (idx == "fl") {
+  if (idx == "fl")
+  {
     camera_center_x = img1_bev.cols / 2;
     camera_center_y = size;
-  } else if (idx == "fr") {
+  }
+  else if (idx == "fr")
+  {
     camera_center_x = img1_bev.cols / 2;
     camera_center_y = size;
-  } else if (idx == "bl") {
+  }
+  else if (idx == "bl")
+  {
     camera_center_x = img1_bev.cols / 2;
     camera_center_y = img1_bev.rows - size;
-  } else if (idx == "br") {
+  }
+  else if (idx == "br")
+  {
     camera_center_x = img1_bev.cols / 2;
     camera_center_y = img1_bev.rows - size;
-  } else if (idx == "lf") {
+  }
+  else if (idx == "lf")
+  {
     camera_center_x = size;
     camera_center_y = img1_bev.rows / 2;
-  } else if (idx == "rf") {
+  }
+  else if (idx == "rf")
+  {
     camera_center_x = img1_bev.cols - size;
     camera_center_y = img1_bev.rows / 2;
-  } else if (idx == "lb") {
+  }
+  else if (idx == "lb")
+  {
     camera_center_x = size;
     camera_center_y = img1_bev.rows / 2;
-  } else if (idx == "rb") {
+  }
+  else if (idx == "rb")
+  {
     camera_center_x = img1_bev.cols - size;
     camera_center_y = img1_bev.rows / 2;
   }
 
   vector<cv::Point> commonview;
   vector<Point> contour1_pixels = contours[0];
-  for (auto pixel : contour1_pixels) {
+  for (auto pixel : contour1_pixels)
+  {
     if (pixel.x < 10 || pixel.y < 10 || (pixel.x + 10) > img1_bev.cols ||
         (pixel.y + 10) > img1_bev.rows)
       continue;
@@ -198,10 +240,12 @@ vector<cv::Point> extractor::extrac_textures_and_save(string pic_filename,
   vector<cv::Point> commonview_down;
   Mat show = img1_bev.clone();
   srand((int)time(0));
-  for (int i = 0; i < down_sample; i++) {
+  for (int i = 0; i < down_sample; i++)
+  {
     int k = rand() % commonview.size();
     commonview_down.push_back(commonview[k]);
     circle(show, commonview[k], 1, Scalar(0, 0, 0), -1);
   }
+  imwrite("./commonview_down.png", show);
   return commonview_down;
 }

@@ -29,19 +29,22 @@ double during_bev;
 double during_compute_error;
 double during_wrap;
 
-double CameraOptimization(Optimizer &opt, string cameraType) {
+double CameraOptimization(Optimizer &opt, string cameraType)
+{
   std::chrono::_V2::steady_clock::time_point end_calib_ =
       chrono::steady_clock::now();
   ;
   double during_calib_ = 0;
-  if (opt.coarse_flag) {
+  if (opt.coarse_flag)
+  {
     cout << "**************************************1st*************************"
             "***************"
          << endl;
     int thread_num = 7;
     vector<thread> threads(thread_num);
     auto start_calib = chrono::steady_clock::now();
-    if (cameraType == "right") {
+    if (cameraType == "right")
+    {
       int iter_nums = 100000;
       threads[0] = thread(&Optimizer::Calibrate_right, &opt, iter_nums, -3, 3,
                           -3, 3, -3, 3, -0.01, 0.01, -0.01, 0.01, -0.01, 0.01);
@@ -57,7 +60,9 @@ double CameraOptimization(Optimizer &opt, string cameraType) {
                           -3, 3, -3, 0, -0.01, 0.01, -0.01, 0.01, -0.01, 0.01);
       threads[6] = thread(&Optimizer::Calibrate_right, &opt, iter_nums, -3, 3,
                           -3, 3, 0, 3, -0.01, 0.01, -0.01, 0.01, -0.01, 0.01);
-    } else if (cameraType == "left") {
+    }
+    else if (cameraType == "left")
+    {
       int iter_nums = 100000;
       threads[0] = thread(&Optimizer::Calibrate_left, &opt, iter_nums, -3, 3,
                           -3, 3, -3, 3, -0.01, 0.01, -0.01, 0.01, -0.01, 0.01);
@@ -73,7 +78,9 @@ double CameraOptimization(Optimizer &opt, string cameraType) {
                           -3, 3, -3, 0, -0.01, 0.01, -0.01, 0.01, -0.01, 0.01);
       threads[6] = thread(&Optimizer::Calibrate_left, &opt, iter_nums, -3, 3,
                           -3, 3, 0, 3, -0.01, 0.01, -0.01, 0.01, -0.01, 0.01);
-    } else if (cameraType == "behind") {
+    }
+    else if (cameraType == "behind")
+    {
       int iter_nums = 100000;
       threads[0] = thread(&Optimizer::Calibrate_behind, &opt, iter_nums, -3, 3,
                           -3, 3, -3, 3, -0.01, 0.01, -0.01, 0.01, -0.01, 0.01);
@@ -90,14 +97,16 @@ double CameraOptimization(Optimizer &opt, string cameraType) {
       threads[6] = thread(&Optimizer::Calibrate_behind, &opt, iter_nums, -3, 3,
                           -3, 3, 0, 3, -0.01, 0.01, -0.01, 0.01, -0.01, 0.01);
     }
-    for (int i = 0; i < thread_num; i++) {
+    for (int i = 0; i < thread_num; i++)
+    {
       threads[i].join();
     }
     end_calib_ = chrono::steady_clock::now();
     during_calib_ =
         std::chrono::duration<double>(end_calib_ - start_calib).count();
     cout << "time:" << during_calib_ << endl;
-    if (cameraType == "left") {
+    if (cameraType == "left")
+    {
       opt.show("left", opt.prefix + "/after_left_calib1.png");
       cout << "luminorsity loss before pre opt:" << opt.max_left_loss << endl;
       cout << "luminorsity loss after pre opt:" << opt.cur_left_loss << endl;
@@ -106,7 +115,9 @@ double CameraOptimization(Optimizer &opt, string cameraType) {
       cout << "best search parameters:" << endl;
       for (auto e : opt.bestVal_[0])
         cout << fixed << setprecision(6) << e << " ";
-    } else if (cameraType == "behind") {
+    }
+    else if (cameraType == "behind")
+    {
       opt.show("behind", opt.prefix + "/after_behind_calib1.png");
       cout << "luminorsity loss before pre opt:" << opt.max_behind_loss << endl;
       cout << "luminorsity loss after pre opt:" << opt.cur_behind_loss << endl;
@@ -115,7 +126,9 @@ double CameraOptimization(Optimizer &opt, string cameraType) {
       cout << "best search parameters:" << endl;
       for (auto e : opt.bestVal_[2])
         cout << fixed << setprecision(6) << e << " ";
-    } else if (cameraType == "right") {
+    }
+    else if (cameraType == "right")
+    {
       opt.show("right", opt.prefix + "/after_right_calib1.png");
       cout << "luminorsity loss before pre opt:" << opt.max_right_loss << endl;
       cout << "luminorsity loss after pre opt:" << opt.cur_right_loss << endl;
@@ -134,7 +147,8 @@ double CameraOptimization(Optimizer &opt, string cameraType) {
   int thread_num_ = 6;
   int iter_nums_ = 15000;
   vector<thread> threads_(thread_num_);
-  if (cameraType == "right") {
+  if (cameraType == "right")
+  {
     threads_[0] =
         thread(&Optimizer::fine_Calibrate_right, &opt, iter_nums_, -1, 1, -1, 1,
                -1, 1, -0.005, 0.005, -0.005, 0.005, -0.005, 0.005);
@@ -153,7 +167,9 @@ double CameraOptimization(Optimizer &opt, string cameraType) {
     threads_[5] = thread(&Optimizer::fine_Calibrate_right, &opt, iter_nums_,
                          -0.5, 0.5, -0.5, 0.5, -0.5, 0.5, -0.005, 0.005, -0.005,
                          0.005, -0.005, 0.005);
-  } else if (cameraType == "left") {
+  }
+  else if (cameraType == "left")
+  {
     threads_[0] =
         thread(&Optimizer::fine_Calibrate_left, &opt, iter_nums_, -1, 1, -1, 1,
                -1, 1, -0.005, 0.005, -0.005, 0.005, -0.005, 0.005);
@@ -172,7 +188,9 @@ double CameraOptimization(Optimizer &opt, string cameraType) {
     threads_[5] = thread(&Optimizer::fine_Calibrate_left, &opt, iter_nums_,
                          -0.5, 0.5, -0.5, 0.5, -0.5, 0.5, -0.005, 0.005, -0.005,
                          0.005, -0.005, 0.005);
-  } else if (cameraType == "behind") {
+  }
+  else if (cameraType == "behind")
+  {
     threads_[0] =
         thread(&Optimizer::fine_Calibrate_behind, &opt, iter_nums_, -1, 1, -1,
                1, -1, 1, -0.005, 0.005, -0.005, 0.005, -0.005, 0.005);
@@ -192,31 +210,40 @@ double CameraOptimization(Optimizer &opt, string cameraType) {
                          -0.5, 0.5, -0.5, 0.5, -0.5, 0.5, -0.005, 0.005, -0.005,
                          0.005, -0.005, 0.005);
   }
-  for (int i = 0; i < thread_num_; i++) {
+  for (int i = 0; i < thread_num_; i++)
+  {
     threads_[i].join();
   }
   auto end_calib__ = chrono::steady_clock::now();
   double during_calib__ =
       std::chrono::duration<double>(end_calib__ - end_calib_).count();
   cout << "time:" << during_calib__ << endl;
-  if (cameraType == "left") {
+  if (cameraType == "left")
+  {
     opt.show("left", opt.prefix + "/after_left_calib2.png");
     cout << "luminorsity loss after opt:" << opt.cur_left_loss << endl;
-    cout << "extrinsic after opt:" << endl << opt.extrinsic_left_opt << endl;
+    cout << "extrinsic after opt:" << endl
+         << opt.extrinsic_left_opt << endl;
     cout << "best search parameters:" << endl;
     for (auto e : opt.bestVal_[0])
       cout << fixed << setprecision(6) << e << " ";
-  } else if (cameraType == "behind") {
+  }
+  else if (cameraType == "behind")
+  {
     opt.show("behind", opt.prefix + "/after_behind_calib2.png");
     cout << "luminorsity loss after opt:" << opt.cur_behind_loss << endl;
-    cout << "extrinsic after opt:" << endl << opt.extrinsic_behind_opt << endl;
+    cout << "extrinsic after opt:" << endl
+         << opt.extrinsic_behind_opt << endl;
     cout << "best search parameters:" << endl;
     for (auto e : opt.bestVal_[2])
       cout << fixed << setprecision(6) << e << " ";
-  } else if (cameraType == "right") {
+  }
+  else if (cameraType == "right")
+  {
     opt.show("right", opt.prefix + "/after_right_calib2.png");
     cout << "luminorsity loss after opt:" << opt.cur_right_loss << endl;
-    cout << "extrinsic after opt:" << endl << opt.extrinsic_right_opt << endl;
+    cout << "extrinsic after opt:" << endl
+         << opt.extrinsic_right_opt << endl;
     cout << "best search parameters:" << endl;
     for (auto e : opt.bestVal_[1])
       cout << fixed << setprecision(6) << e << " ";
@@ -229,7 +256,8 @@ double CameraOptimization(Optimizer &opt, string cameraType) {
   int thread_num__ = 3;
   int iter_nums__ = 8000;
   vector<thread> threads__(thread_num__);
-  if (cameraType == "right") {
+  if (cameraType == "right")
+  {
     threads__[0] = thread(&Optimizer::fine_Calibrate_right, &opt, iter_nums__,
                           -0.01, 0.01, -0.01, 0.01, -0.01, 0.01, -0.002, 0.002,
                           -0.002, 0.002, -0.002, 0.002);
@@ -239,7 +267,9 @@ double CameraOptimization(Optimizer &opt, string cameraType) {
     threads__[2] = thread(&Optimizer::fine_Calibrate_right, &opt, iter_nums__,
                           -0.01, 0.01, -0.01, 0.01, -0.01, 0.01, -0.001, 0.01,
                           -0.001, 0.001, -0.001, 0.001);
-  } else if (cameraType == "left") {
+  }
+  else if (cameraType == "left")
+  {
     threads__[0] = thread(&Optimizer::fine_Calibrate_left, &opt, iter_nums__,
                           -0.01, 0.01, -0.01, 0.01, -0.01, 0.01, -0.002, 0.002,
                           -0.002, 0.002, -0.002, 0.002);
@@ -249,7 +279,9 @@ double CameraOptimization(Optimizer &opt, string cameraType) {
     threads__[2] = thread(&Optimizer::fine_Calibrate_left, &opt, iter_nums__,
                           -0.01, 0.01, -0.01, 0.01, -0.01, 0.01, -0.001, 0.001,
                           -0.001, 0.001, -0.001, 0.001);
-  } else if (cameraType == "behind") {
+  }
+  else if (cameraType == "behind")
+  {
     threads__[0] = thread(&Optimizer::fine_Calibrate_behind, &opt, iter_nums__,
                           -0.01, 0.01, -0.01, 0.01, -0.01, 0.01, -0.002, 0.002,
                           -0.002, 0.002, -0.002, 0.002);
@@ -260,31 +292,40 @@ double CameraOptimization(Optimizer &opt, string cameraType) {
                           -0.01, 0.01, -0.01, 0.01, -0.01, 0.01, -0.001, 0.001,
                           -0.001, 0.001, -0.001, 0.001);
   }
-  for (int i = 0; i < thread_num__; i++) {
+  for (int i = 0; i < thread_num__; i++)
+  {
     threads__[i].join();
   }
   auto end_calib___ = chrono::steady_clock::now();
   double during_calib___ =
       std::chrono::duration<double>(end_calib___ - end_calib__).count();
   cout << "time:" << during_calib___ << endl;
-  if (cameraType == "left") {
+  if (cameraType == "left")
+  {
     opt.show("left", opt.prefix + "/after_left_calib3.png");
     cout << "luminorsity loss after opt:" << opt.cur_left_loss << endl;
-    cout << "extrinsic after opt:" << endl << opt.extrinsic_left_opt << endl;
+    cout << "extrinsic after opt:" << endl
+         << opt.extrinsic_left_opt << endl;
     cout << "best search parameters:" << endl;
     for (auto e : opt.bestVal_[0])
       cout << fixed << setprecision(6) << e << " ";
-  } else if (cameraType == "behind") {
+  }
+  else if (cameraType == "behind")
+  {
     opt.show("behind", opt.prefix + "/after_behind_calib3.png");
     cout << "luminorsity loss after opt:" << opt.cur_behind_loss << endl;
-    cout << "extrinsic after opt:" << endl << opt.extrinsic_behind_opt << endl;
+    cout << "extrinsic after opt:" << endl
+         << opt.extrinsic_behind_opt << endl;
     cout << "best search parameters:" << endl;
     for (auto e : opt.bestVal_[2])
       cout << fixed << setprecision(6) << e << " ";
-  } else if (cameraType == "right") {
+  }
+  else if (cameraType == "right")
+  {
     opt.show("right", opt.prefix + "/after_right_calib3.png");
     cout << "luminorsity loss after opt:" << opt.cur_right_loss << endl;
-    cout << "extrinsic after opt:" << endl << opt.extrinsic_right_opt << endl;
+    cout << "extrinsic after opt:" << endl
+         << opt.extrinsic_right_opt << endl;
     cout << "best search parameters:" << endl;
     for (auto e : opt.bestVal_[1])
       cout << fixed << setprecision(6) << e << " ";
@@ -295,7 +336,8 @@ double CameraOptimization(Optimizer &opt, string cameraType) {
   return during_calib_ + during_calib__ + during_calib___;
 }
 
-int main() {
+int main()
+{
   // camera_model:0-fisheye;1-Ocam;2-pinhole
   int camera_model = 2;
 
@@ -339,7 +381,7 @@ int main() {
   GR = opt.tail(GR, "r");
 
   Mat bev_before = opt.generate_surround_view(GF, GL, GB, GR);
-  imwrite("./before_all_calib.png", bev_before);
+  imwrite("./test_before_all_calib.png", bev_before);
 
   // texture extraction
   int edge_flag_fl = 0;     // if filter common-view
@@ -354,7 +396,8 @@ int main() {
   else
     opt.ncoef_fl = 1;
   Mat pG_fl = Mat::ones(3, opt.fl_pixels_texture.size(), CV_64FC1);
-  for (int i = 0; i < opt.fl_pixels_texture.size(); i++) {
+  for (int i = 0; i < opt.fl_pixels_texture.size(); i++)
+  {
     pG_fl.at<double>(0, i) = opt.fl_pixels_texture[i].x;
     pG_fl.at<double>(1, i) = opt.fl_pixels_texture[i].y;
   }
@@ -376,7 +419,8 @@ int main() {
   else
     opt.ncoef_fr = 1;
   Mat pG_fr = Mat::ones(3, opt.fr_pixels_texture.size(), CV_64FC1);
-  for (int i = 0; i < opt.fr_pixels_texture.size(); i++) {
+  for (int i = 0; i < opt.fr_pixels_texture.size(); i++)
+  {
     pG_fr.at<double>(0, i) = opt.fr_pixels_texture[i].x;
     pG_fr.at<double>(1, i) = opt.fr_pixels_texture[i].y;
   }
@@ -411,7 +455,8 @@ int main() {
   else
     opt.ncoef_bl = 1;
   Mat pG_bl = Mat::ones(3, opt.bl_pixels_texture.size(), CV_64FC1);
-  for (int i = 0; i < opt.bl_pixels_texture.size(); i++) {
+  for (int i = 0; i < opt.bl_pixels_texture.size(); i++)
+  {
     pG_bl.at<double>(0, i) = opt.bl_pixels_texture[i].x;
     pG_bl.at<double>(1, i) = opt.bl_pixels_texture[i].y;
   }
@@ -435,7 +480,8 @@ int main() {
   else
     opt.ncoef_br = 1;
   Mat pG_br = Mat::ones(3, opt.br_pixels_texture.size(), CV_64FC1);
-  for (int i = 0; i < opt.br_pixels_texture.size(); i++) {
+  for (int i = 0; i < opt.br_pixels_texture.size(); i++)
+  {
     pG_br.at<double>(0, i) = opt.br_pixels_texture[i].x;
     pG_br.at<double>(1, i) = opt.br_pixels_texture[i].y;
   }

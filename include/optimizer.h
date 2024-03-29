@@ -10,7 +10,8 @@
 using namespace cv;
 using namespace std;
 
-class Optimizer {
+class Optimizer
+{
 private:
   mutable std::mutex mutexfront;
   mutable std::mutex mutexleft;
@@ -131,14 +132,16 @@ public:
 
   // ncoef-commonView mean luminorsity ratio
   double ncoef_fl, ncoef_fr, ncoef_bl, ncoef_br;
+  vector<Point3f> pts_3d_F, pts_3d_L, pts_3d_B, pts_3d_R;
+  vector<Point2f> pts_2d_F, pts_2d_L, pts_2d_B, pts_2d_R;
 
   // Optimizer();
-  Optimizer(const Mat *imgf, const Mat *imgl, const Mat *imgb, const Mat *imgr,
-            int camera_model_index, int rows, int cols, string first_order,
-            int flag, string data_set);
+  Optimizer(const Mat *imgf, const Mat *imgl, const Mat *imgb, const Mat *imgr, int camera_model_index, int rows, int cols, string first_order, int flag, string data_set);
   ~Optimizer();
   void initializeK();
   void initializeD();
+  void Initialize3dPoints();
+  void Initialize2dPoints();
   void initializePose();
   void initializeKG();
   void initializeHeight();
