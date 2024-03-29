@@ -5,7 +5,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -pthread")
 SET(CMAKE_BUILD_TYPE "Release")
 
 include_directories("/usr/include/eigen3")
-find_package(OpenCV REQUIRED )
+find_package(OpenCV REQUIRED)
 
 include_directories(${OpenCV_INCLUDE_DIRS})
 link_directories(${OpenCV_INSTALL_PATH}/lib)
@@ -20,3 +20,4 @@ target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS})
 add_executable(run_AVM_Calibration src/calibration.cpp)
 target_link_libraries(run_AVM_Calibration ${PROJECT_NAME})
 
+# modified
