@@ -1,0 +1,68 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "2.8"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "online_Calibration",
+					"targetIndexes" : 
+					[
+						0,
+						1
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "online_Calibration::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-online_Calibration-Debug-5db1b29012ae8b11bd98.json",
+					"name" : "online_Calibration",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "run_AVM_Calibration::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-run_AVM_Calibration-Debug-331f9084bf93a1a1dc7a.json",
+					"name" : "run_AVM_Calibration",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/iimt/SensorsCalibration/surround-camera/auto_calib/build",
+		"source" : "/home/iimt/SensorsCalibration/surround-camera/auto_calib"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 0
+	}
+}

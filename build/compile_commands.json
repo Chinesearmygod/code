@@ -1,0 +1,22 @@
+[
+{
+  "directory": "/home/iimt/SensorsCalibration/surround-camera/auto_calib/build",
+  "command": "/usr/bin/g++   -I/usr/include/eigen3 -I/home/iimt/SensorsCalibration/surround-camera/auto_calib/include -I/home/iimt/SensorsCalibration/surround-camera/auto_calib/src -isystem /usr/include/opencv4  -std=c++17 -g -Wall -std=c++17 -pthread -g   -o CMakeFiles/run_AVM_Calibration.dir/src/calibration.cpp.o -c /home/iimt/SensorsCalibration/surround-camera/auto_calib/src/calibration.cpp",
+  "file": "/home/iimt/SensorsCalibration/surround-camera/auto_calib/src/calibration.cpp"
+},
+{
+  "directory": "/home/iimt/SensorsCalibration/surround-camera/auto_calib/build",
+  "command": "/usr/bin/g++   -I/usr/include/eigen3 -I/home/iimt/SensorsCalibration/surround-camera/auto_calib/include -I/home/iimt/SensorsCalibration/surround-camera/auto_calib/src -isystem /usr/include/opencv4  -std=c++17 -g -Wall -std=c++17 -pthread -g   -o CMakeFiles/online_Calibration.dir/src/calibration.cpp.o -c /home/iimt/SensorsCalibration/surround-camera/auto_calib/src/calibration.cpp",
+  "file": "/home/iimt/SensorsCalibration/surround-camera/auto_calib/src/calibration.cpp"
+},
+{
+  "directory": "/home/iimt/SensorsCalibration/surround-camera/auto_calib/build",
+  "command": "/usr/bin/g++   -I/usr/include/eigen3 -I/home/iimt/SensorsCalibration/surround-camera/auto_calib/include -I/home/iimt/SensorsCalibration/surround-camera/auto_calib/src -isystem /usr/include/opencv4  -std=c++17 -g -Wall -std=c++17 -pthread -g   -o CMakeFiles/online_Calibration.dir/src/optimizer.cpp.o -c /home/iimt/SensorsCalibration/surround-camera/auto_calib/src/optimizer.cpp",
+  "file": "/home/iimt/SensorsCalibration/surround-camera/auto_calib/src/optimizer.cpp"
+},
+{
+  "directory": "/home/iimt/SensorsCalibration/surround-camera/auto_calib/build",
+  "command": "/usr/bin/g++   -I/usr/include/eigen3 -I/home/iimt/SensorsCalibration/surround-camera/auto_calib/include -I/home/iimt/SensorsCalibration/surround-camera/auto_calib/src -isystem /usr/include/opencv4  -std=c++17 -g -Wall -std=c++17 -pthread -g   -o CMakeFiles/online_Calibration.dir/src/texture_extractor.cpp.o -c /home/iimt/SensorsCalibration/surround-camera/auto_calib/src/texture_extractor.cpp",
+  "file": "/home/iimt/SensorsCalibration/surround-camera/auto_calib/src/texture_extractor.cpp"
+}
+]
